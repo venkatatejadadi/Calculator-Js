@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <style>
+      #root {
+        width: 360px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background-color: #666;
+        border-radius: 8px;
+      }
+
+      input {
+        padding: 8px;
+        height: 40px;
+        border-radius: 8px;
+        color: black;
+        font-size: 24px;
+        text-align: right;
+      }
+
+      .row {
+        display: flex;
+        gap: 16px;
+      }
+
+      button {
+        padding: 16px;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 20px;
+      }
+
+      button.yellow {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const rootEl = document.querySelector("#root");
+
+      const displayElement = document.createElement("input");
+      rootEl.appendChild(displayElement);
+
+      const KEYS = [
+        ["C", "CE", "(", ")"],
+        [7, 8, 9, "/"],
+        [4, 5, 6, "*"],
+        [1, 2, 3, "-"],
+        [0, ".", "+", "="],
+      ];
+
+      KEYS.forEach((keyRow) => {
+        const row = document.createElement("div");
+        row.classList.add("row");
+        keyRow.forEach((key) => {
+          const btn = createButton(key);
+          row.appendChild(btn);
+        });
+        rootEl.appendChild(row);
+      });
+
+      function createButton(label) {
+        const btnEl = document.createElement("button");
+        btnEl.innerHTML = label;
+        if (label === "=") {
+          btnEl.classList.add("yellow");
+        }
+        btnEl.addEventListener("click", () => {
+          if (label === "=") {
+            displayElement.value = eval(displayElement.value);
+            return;
+          }
+          if (label === "C") {
+            displayElement.value = displayElement.value.slice(0, -1);
+            return;
+          }
+          if (label === "CE") {
+            displayElement.value = "";
+            return;
+          }
+          displayElement.value += label;
+        });
+        return btnEl;
+      }
+    </script>
+  </body>
+</html>
